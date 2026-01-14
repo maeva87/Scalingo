@@ -5,12 +5,13 @@ import Log from "../models/Log";
 export default async function (fastify: FastifyInstance) {
   fastify.get("/ping", async () => {
     // Test TypeORM (SQL)
+    process.env.PORT
     let sqlCount = 0;
-    let sqlStatus = "not connected";
+    let sqlStatus = "not connected" + process.env.DB_HOST;
     if (fastify.db && fastify.db.isInitialized) {
       const userRepository = fastify.db.getRepository(User);
       sqlCount = await userRepository.count();
-      sqlStatus = "connected";
+      sqlStatus = `connected${process.env.DB_HOST}`;
     }
 
     // Test Mongoose (NoSQL)
